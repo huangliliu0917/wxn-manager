@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wxn.store.dal.mapper.TbkItemDetailMapper">
+    <resultMap id="BaseResultMap" type="wxn.store.dal.model.TbkItemDetailDO">
+        <result column="ITEM_ID" jdbcType="VARCHAR" property="itemId" />
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="PICT_URL" jdbcType="VARCHAR" property="pictUrl" />
+        <result column="SMALL_IMAGES" jdbcType="VARCHAR" property="smallImages" />
+        <result column="RESERVE_PRICE" jdbcType="VARCHAR" property="reservePrice" />
+        <result column="ZK_FINAL_PRICE" jdbcType="VARCHAR" property="zkFinalPrice" />
+        <result column="USER_TYPE" jdbcType="DECIMAL" property="userType" />
+        <result column="PROVCITY" jdbcType="VARCHAR" property="provcity" />
+        <result column="ITEM_URL" jdbcType="VARCHAR" property="itemUrl" />
+        <result column="NICK" jdbcType="VARCHAR" property="nick" />
+        <result column="SELLER_ID" jdbcType="VARCHAR" property="sellerId" />
+        <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
+        <result column="CAT_LEAF_NAME" jdbcType="VARCHAR" property="catLeftName" />
+        <result column="CAT_NAME" jdbcType="VARCHAR" property="catName" />
+        <result column="SCLICK" jdbcType="VARCHAR" property="sclick" />
+        <result column="CODE_DATE" jdbcType="VARCHAR" property="codeDate" />
+        <result column="TAO_TOKEN" jdbcType="VARCHAR" property="taoToken" />
+        <result column="SHORT_LINK_URL" jdbcType="VARCHAR" property="shortLinkUrl" />
+        <result column="IS_CODE" jdbcType="VARCHAR" property="isCode" />
+    </resultMap>
+
+
+    <insert id="insert" parameterType="wxn.store.dal.model.TbkItemDetailDO">
+        insert into t_tbk_item_detail(
+          ITEM_ID,
+          TITLE,
+          PICT_URL,
+          SMALL_IMAGES,
+          RESERVE_PRICE,
+          ZK_FINAL_PRICE,
+          USER_TYPE,
+          PROVCITY,
+          ITEM_URL,
+          NICK,
+          SELLER_ID,
+          VOLUME,
+          CAT_LEAF_NAME,
+          CAT_NAME
+          )
+        VALUES (
+        #{itemId,jdbcType=VARCHAR},
+        #{title,jdbcType=VARCHAR},
+        #{pictUrl,jdbcType=VARCHAR},
+        #{smallImages,jdbcType=VARCHAR},
+        #{reservePrice,jdbcType=VARCHAR},
+        #{zkFinalPrice,jdbcType=VARCHAR},
+        #{userType,jdbcType=DECIMAL},
+        #{provcity,jdbcType=VARCHAR},
+        #{itemUrl,jdbcType=VARCHAR},
+        #{nick,jdbcType=VARCHAR},
+        #{sellerId,jdbcType=VARCHAR},
+        #{volume,jdbcType=DECIMAL},
+        #{catLeftName,jdbcType=VARCHAR},
+        #{catName,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--查出为转换口令的链接，去转换-->
+    <select id="getTbkItemDetailList" resultMap="BaseResultMap">
+        SELECT ITEM_ID,ITEM_URL from t_tbk_item_detail t where t.IS_CODE = '2'
+    </select>
+
+    <!--口令转换后，写入表内-->
+    <update id="updateTbkItemByItemId" parameterType="wxn.store.dal.model.TbkItemDetailDO">
+        UPDATE t_tbk_item_detail t SET
+            SCLICK = #{sclick,jdbcType=VARCHAR},
+            TAO_TOKEN = #{taoToken,jdbcType=VARCHAR},
+            SHORT_LINK_URL = #{shortLinkUrl,jdbcType=VARCHAR},
+            CODE_DATE = now(),
+            IS_CODE = '1'
+        where t.IS_CODE = '2'
+        and   t.ITEM_ID = #{itemId,jdbcType=VARCHAR}
+    </update>
+</mapper>

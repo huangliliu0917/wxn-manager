@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wxn.store.dal.mapper.TbkItemMapper">
+    <resultMap id="BaseResultMap1" type="wxn.store.dal.model.TbkItemDO">
+        <result column="ITEM_ID" jdbcType="VARCHAR" property="itemId" />
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="PICT_URL" jdbcType="VARCHAR" property="pictUrl" />
+        <result column="SMALL_IMAGES" jdbcType="VARCHAR" property="smallImages" />
+        <result column="RESERVE_PRICE" jdbcType="VARCHAR" property="reservePrice" />
+        <result column="ZK_FINAL_PRICE" jdbcType="VARCHAR" property="zkFinalPrice" />
+        <result column="USER_TYPE" jdbcType="DECIMAL" property="userType" />
+        <result column="PROVCITY" jdbcType="VARCHAR" property="provcity" />
+        <result column="ITEM_URL" jdbcType="VARCHAR" property="itemUrl" />
+        <result column="NICK" jdbcType="VARCHAR" property="nick" />
+        <result column="SELLER_ID" jdbcType="VARCHAR" property="sellerId" />
+        <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
+        <result column="RATE_TYPE" jdbcType="VARCHAR" property="rateType" />
+        <result column="IS_CODE" jdbcType="VARCHAR" property="isCode" />
+        <result column="IS_SHOW" jdbcType="VARCHAR" property="isShow" />
+    </resultMap>
+
+
+    <insert id="insert" parameterType="wxn.store.dal.model.TbkItemDO">
+        insert into t_tbk_item (
+          ITEM_ID,
+          TITLE,
+          PICT_URL,
+          SMALL_IMAGES,
+          RESERVE_PRICE,
+          ZK_FINAL_PRICE,
+          USER_TYPE,
+          PROVCITY,
+          ITEM_URL,
+          NICK,
+          SELLER_ID,
+          VOLUME
+          )
+        VALUES (
+        #{itemId,jdbcType=VARCHAR},
+        #{title,jdbcType=VARCHAR},
+        #{pictUrl,jdbcType=VARCHAR},
+        #{smallImages,jdbcType=VARCHAR},
+        #{reservePrice,jdbcType=VARCHAR},
+        #{zkFinalPrice,jdbcType=VARCHAR},
+        #{userType,jdbcType=DECIMAL},
+        #{provcity,jdbcType=VARCHAR},
+        #{itemUrl,jdbcType=VARCHAR},
+        #{nick,jdbcType=VARCHAR},
+        #{sellerId,jdbcType=VARCHAR},
+        #{volume,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <!--口令转换后，更改口令状态-->
+    <update id="updateTbkItemByItemId" parameterType="java.lang.String">
+        UPDATE t_tbk_item t SET
+          IS_CODE = '1',
+          IS_SHOW = '1'
+        where t.IS_CODE = '2'
+        and t.IS_SHOW = '2'
+        and   t.ITEM_ID = #{itemId,jdbcType=VARCHAR}
+    </update>
+</mapper>
